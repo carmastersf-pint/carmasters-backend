@@ -5,7 +5,7 @@ import express from "express";
 import path from "path";
 import { Pool } from "pg";
 import { fileURLToPath } from "url";
-
+import notionWebhook from "./routes/notionWebhook.js";
 // Necesario para usar __dirname en módulos ES
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -73,3 +73,4 @@ app.listen(PORT, () => {
 app.get("/api/status", (req, res) => {
   res.json({ message: "API conectada ✔️" });
 });
+app.use("/api/notion", notionWebhook);

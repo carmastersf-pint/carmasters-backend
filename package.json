@@ -1,23 +1,29 @@
 {
-  "name": "carmasters-server",
+  "name": "gestor-taller",
   "version": "1.0.0",
-  "main": "server.js",
-  "type": "module",
+  "description": "Pequeña API para gestionar clientes, vehículos y órdenes de un taller.",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node index.js",
+    "start:prod": "node index.js",
+    "build": "echo \"Front-end es static en /public\"",
+    "migrate-sqlite2pg": "node migrate_sqlite_to_pg.js",
+    "docker:build": "docker build -t gestor-taller .",
+    "docker:run": "docker run -p 3000:3000 --env-file .env -d gestor-taller"
   },
   "dependencies": {
-    "btoa": "^1.2.1",
+    "better-sqlite3": "^12.5.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "multer": "^1.4.5-lts.1",
-    "pg": "^8.11.3",
-    "qrcode": "^1.5.3",
-    "sharp": "^0.33.3"
+    "express": "^4.21.2",
+    "express-validator": "^7.3.1",
+    "moment": "^2.30.1",
+    "multer": "^2.0.2",
+    "qrcode": "^1.5.4",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.4"
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
   }
 }
+
