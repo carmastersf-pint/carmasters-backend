@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>POS · CarMasters</title>
+  <link rel="stylesheet" href="/pos.css" />
+</head>
+<body>
+
+<header>
+  <h1>CarMasters · POS</h1>
+</header>
+
+<main class="pos">
+
+  <!-- CLIENTE -->
+  <section>
+    <h2>Cliente</h2>
+    <input id="clienteNombre" placeholder="Nombre" />
+    <input id="clienteTelefono" placeholder="Teléfono" />
+    <input id="clienteCorreo" placeholder="Correo" />
+    <button onclick="crearCliente()">Guardar Cliente</button>
+    <p id="clienteId"></p>
+  </section>
+
+  <!-- VEHÍCULO -->
+  <section>
+    <h2>Vehículo</h2>
+    <input id="marca" placeholder="Marca" />
+    <input id="modelo" placeholder="Modelo" />
+    <input id="placas" placeholder="Placas" />
+    <button onclick="crearVehiculo()">Guardar Vehículo</button>
+    <p id="vehiculoId"></p>
+  </section>
+
+  <!-- ORDEN -->
+  <section>
+    <h2>Orden</h2>
+    <textarea id="descripcion" placeholder="Descripción del servicio"></textarea>
+    <input id="servicio" placeholder="Servicio" />
+    <input id="total" type="number" placeholder="Total" />
+    <input id="anticipo" type="number" placeholder="Anticipo" />
+    <p><strong>Saldo:</strong> $<span id="saldo">0</span></p>
+    <button class="crear" onclick="crearOrden()">CREAR ORDEN</button>
+    <p id="ordenResultado"></p>
+  </section>
+
+</main>
+
+<script src="/pos.js"></script>
+</body>
+</html>

@@ -46,7 +46,8 @@ function authenticateToken(req, res, next) {
 }
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3001;
+
 
 app.use(cors());
 app.use(express.json());
@@ -518,6 +519,23 @@ app.post("/ordenes/:id/costos", (req, res) => {
 
 
 // =========================
+//       NOTION
+// =========================
+
+app.post("/api/notion/webhook", (req, res) => {
+  // Verificación de Notion (challenge)
+  if (req.body?.challenge) {
+    return res.status(200).json({
+      challenge: req.body.challenge
+    });
+  }
+
+  console.log("Evento Notion recibido:", req.body);
+  res.sendStatus(200);
+});
+
+
+// =========================
 //       HEALTHCHECK
 // =========================
 
@@ -572,4 +590,7 @@ app.post("/ordenes/:id/imagenes", authenticateToken, upload.single("imagen"), (r
     console.error(e);
     return res.status(500).json({ error: "Error al subir imagen" });
   }
+});
+app.get("/healthz", (req, res) => {
+  res.json({ status: "ok" });
 });

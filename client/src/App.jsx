@@ -1,65 +1,29 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import CarMastersHero from "./components/CarMastersHero";
+import PrioridadSelector from "./components/PrioridadSelector";
+import VehicleSelector from "./components/VehicleSelector";
+import Recomendacion from "./components/Recomendacion";
+
+import AdminPanel from "./components/AdminPanel";
+
+// Configurar Axios
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3001",
+});
 
 function App() {
-  const [clientes, setClientes] = useState([]);
-  const [form, setForm] = useState({ nombre: "", telefono: "", correo: "" });
-
-  // Cargar clientes
-  const cargarClientes = async () => {
-    const res = await fetch("http://localhost:3001/clientes");
-    const data = await res.json();
-    setClientes(data);
-  };
-
-  useEffect(() => {
-    cargarClientes();
-  }, []);
-
-  // Crear cliente
-  const crearCliente = async (e) => {
-    e.preventDefault();
-    await fetch("http://localhost:3001/clientes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    setForm({ nombre: "", telefono: "", correo: "" });
-    cargarClientes();
-  };
-
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Gestor CarMasters</h1>
-
-      <h2>Crear cliente</h2>
-      <form onSubmit={crearCliente}>
-        <input
-          placeholder="Nombre"
-          value={form.nombre}
-          onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-        />
-        <input
-          placeholder="Teléfono"
-          value={form.telefono}
-          onChange={(e) => setForm({ ...form, telefono: e.target.value })}
-        />
-        <input
-          placeholder="Correo"
-          value={form.correo}
-          onChange={(e) => setForm({ ...form, correo: e.target.value })}
-        />
-        <button type="submit">Guardar</button>
-      </form>
-
-      <h2>Clientes registrados</h2>
-      <ul>
-        {clientes.map(c => (
-          <li key={c.id}>
-            {c.nombre} – {c.telefono} – {c.correo}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<CarMastersHero />} />
+        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/configurador" element={<PrioridadSelector />} />
+        <Route path="/configurador/vehiculo" element={<VehicleSelector />} />
+        <Route path="/configurador/recomendacion" element={<Recomendacion />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
