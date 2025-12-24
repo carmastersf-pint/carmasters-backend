@@ -7,6 +7,7 @@ import VehicleSelector from "./components/VehicleSelector";
 import Recomendacion from "./components/Recomendacion";
 
 import AdminPanel from "./components/AdminPanel";
+import Login from "./components/Login";
 
 // Configurar Axios
 const api = axios.create({
@@ -18,6 +19,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<CarMastersHero />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/configurador" element={<PrioridadSelector />} />
         <Route path="/configurador/vehiculo" element={<VehicleSelector />} />

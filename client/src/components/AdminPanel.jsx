@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   LayoutDashboard, 
   Users, 
@@ -24,6 +24,7 @@ const api = axios.create({
 });
 
 export default function AdminPanel() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -48,6 +49,14 @@ export default function AdminPanel() {
     imagenes: []
   });
 
+  // Verificar Auth
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login');
+    }
+  }, [navigate]);
+
   // Cargar datos según tab activo
   useEffect(() => {
     if (activeTab === 'clientes') {
@@ -61,6 +70,11 @@ export default function AdminPanel() {
       cargarOrdenes();
     }
   }, [activeTab]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   const cargarClientes = async () => {
     try {
@@ -223,13 +237,13 @@ export default function AdminPanel() {
           </nav>
 
           <div className="p-4 border-t border-gray-800">
-            <Link 
-              to="/" 
-              className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white transition-colors text-sm font-medium"
+            <button 
+              onClick={handleLogout}
+              className="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white transition-colors text-sm font-medium"
             >
               <LogOut className="w-5 h-5" />
-              Salir al Sitio Web
-            </Link>
+              Cerrar Sesión
+            </button>
           </div>
         </div>
       </aside>
