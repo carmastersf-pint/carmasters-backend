@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CarMastersHero from "./components/CarMastersHero";
 import PrioridadSelector from "./components/PrioridadSelector";
 import VehicleSelector from "./components/VehicleSelector";
@@ -8,11 +6,6 @@ import Recomendacion from "./components/Recomendacion";
 
 import AdminPanel from "./components/AdminPanel";
 import Login from "./components/Login";
-
-// Configurar Axios
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3001",
-});
 
 function App() {
   return (

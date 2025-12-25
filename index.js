@@ -203,7 +203,7 @@ app.delete("/clientes/:id", authenticateToken, async (req, res) => {
 //        VEHÍCULOS
 // =========================
 
-app.get("/vehiculos", async (req, res) => {
+app.get("/vehiculos", authenticateToken, async (req, res) => {
   try {
     res.json(await dbAll("SELECT * FROM vehiculos ORDER BY id DESC"));
   } catch (e) {
@@ -291,7 +291,7 @@ app.delete("/vehiculos/:id", authenticateToken, async (req, res) => {
 //        ÓRDENES
 // =========================
 
-app.get("/ordenes", async (req, res) => {
+app.get("/ordenes", authenticateToken, async (req, res) => {
   try {
     const rows = await dbAll(`
       SELECT 
@@ -384,7 +384,7 @@ app.post("/ordenes", authenticateToken, upload.array("imagenes", 8), async (req,
 
 
 // Detalle orden
-app.get("/ordenes/:id", async (req, res) => {
+app.get("/ordenes/:id", authenticateToken, async (req, res) => {
   try {
     const row = await dbGet(
       `SELECT 

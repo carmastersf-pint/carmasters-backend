@@ -1,18 +1,11 @@
-import { useState, useEffect } from "react";
-import { Sparkles, Shield, Zap, ChevronRight, Menu, X } from 'lucide-react';
+import { useState } from "react";
+import { Sparkles, Menu, X, ChevronRight } from 'lucide-react';
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
 export default function CarMastersHero() {
-  const [scrollY, setScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <div className="relative min-h-screen bg-zinc-950 text-white font-sans selection:bg-white/20 overflow-hidden">

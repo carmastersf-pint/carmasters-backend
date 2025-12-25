@@ -151,86 +151,88 @@ if (DATABASE_URL) {
   const get = (sql, params = []) => db.prepare(sql).get(params);
   const run = (sql, params = []) => db.prepare(sql).run(params);
 
-  if (needInit) {
-    // initialize schema on first run
-    db.exec(`
-PRAGMA foreign_keys = ON;
+  // Always run schema init (safe due to IF NOT EXISTS)
+  db.exec(`
+    PRAGMA foreign_keys = ON;
 
-CREATE TABLE IF NOT EXISTS clientes (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  nombre TEXT NOT NULL,
-  telefono TEXT,
-  correo TEXT,
-  created_at TEXT DEFAULT (datetime('now','localtime'))
-);
+    CREATE TABLE IF NOT EXISTS clientes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nombre TEXT NOT NULL,
+      telefono TEXT,
+      correo TEXT,
+      created_at TEXT DEFAULT (datetime('now','localtime'))
+    );
 
-CREATE TABLE IF NOT EXISTS users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT NOT NULL UNIQUE,
-  password_hash TEXT NOT NULL,
-  nombre TEXT,
-  role TEXT DEFAULT 'user',
-  created_at TEXT DEFAULT (datetime('now','localtime'))
-);
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      nombre TEXT,
+      role TEXT DEFAULT 'user',
+      created_at TEXT DEFAULT (datetime('now','localtime'))
+    );
 
-CREATE TABLE IF NOT EXISTS vehiculos (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  cliente_id INTEGER NOT NULL,
-  marca TEXT,
-  modelo TEXT,
-  placas TEXT,
-  created_at TEXT DEFAULT (datetime('now','localtime')),
-  FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
-);
+    CREATE TABLE IF NOT EXISTS vehiculos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      cliente_id INTEGER NOT NULL,
+      marca TEXT,
+      modelo TEXT,
+      placas TEXT,
+      created_at TEXT DEFAULT (datetime('now','localtime')),
+      FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE
+    );
 
-CREATE TABLE IF NOT EXISTS ordenes (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  cliente_id INTEGER NOT NULL,
-  vehiculo_id INTEGER NOT NULL,
-  descripcion TEXT,
-  imagenes TEXT,
-  servicio TEXT,
-  total REAL DEFAULT 0,
-  anticipo REAL DEFAULT 0,
-  saldo REAL DEFAULT 0,
-  fecha_cita TEXT,
-  fecha_entrega TEXT,
-  qr TEXT,
-  status TEXT DEFAULT 'pendiente',
-  prioridad TEXT DEFAULT 'normal',
-  tecnico TEXT,
-  created_at TEXT DEFAULT (datetime('now','localtime')),
-  FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
-  FOREIGN KEY (vehiculo_id) REFERENCES vehiculos(id) ON DELETE CASCADE
-);
+    CREATE TABLE IF NOT EXISTS ordenes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      cliente_id INTEGER NOT NULL,
+      vehiculo_id INTEGER NOT NULL,
+      descripcion TEXT,
+      imagenes TEXT,
+      servicio TEXT,
+      total REAL DEFAULT 0,
+      anticipo REAL DEFAULT 0,
+      saldo REAL DEFAULT 0,
+      fecha_cita TEXT,
+      fecha_entrega TEXT,
+      qr TEXT,
+      status TEXT DEFAULT 'pendiente',
+      prioridad TEXT DEFAULT 'normal',
+      tecnico TEXT,
+      created_at TEXT DEFAULT (datetime('now','localtime')),
+      FOREIGN KEY (cliente_id) REFERENCES clientes(id) ON DELETE CASCADE,
+      FOREIGN KEY (vehiculo_id) REFERENCES vehiculos(id) ON DELETE CASCADE
+    );
 
-CREATE TABLE IF NOT EXISTS costos (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  orden_id INTEGER NOT NULL,
-  concepto TEXT NOT NULL,
-  costo REAL NOT NULL,
-  tipo TEXT CHECK(tipo IN ('material','mano_obra','externo')) DEFAULT 'material',
-  created_at TEXT DEFAULT (datetime('now','localtime')),
-  FOREIGN KEY (orden_id) REFERENCES ordenes(id) ON DELETE CASCADE
-);
+    CREATE TABLE IF NOT EXISTS costos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      orden_id INTEGER NOT NULL,
+      concepto TEXT NOT NULL,
+      costo REAL NOT NULL,
+      tipo TEXT CHECK(tipo IN ('material','mano_obra','externo')) DEFAULT 'material',
+      created_at TEXT DEFAULT (datetime('now','localtime')),
+      FOREIGN KEY (orden_id) REFERENCES ordenes(id) ON DELETE CASCADE
+    );
 
-CREATE TABLE IF NOT EXISTS logs (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  accion TEXT NOT NULL,
-  usuario TEXT DEFAULT 'sistema',
-  detalle TEXT,
-  created_at TEXT DEFAULT (datetime('now','localtime'))
-);
+    CREATE TABLE IF NOT EXISTS logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      accion TEXT NOT NULL,
+      usuario TEXT DEFAULT 'sistema',
+      detalle TEXT,
+      created_at TEXT DEFAULT (datetime('now','localtime'))
+    );
 
-CREATE INDEX IF NOT EXISTS idx_clientes_nombre ON clientes(nombre);
-CREATE INDEX IF NOT EXISTS idx_veh_cliente ON vehiculos(cliente_id);
-CREATE INDEX IF NOT EXISTS idx_orden_cliente ON ordenes(cliente_id);
-CREATE INDEX IF NOT EXISTS idx_orden_estado ON ordenes(status);
-CREATE INDEX IF NOT EXISTS idx_costos_orden ON costos(orden_id);
-    `);
-
-    console.log("🔥 Base de datos SQLite inicializada:", dbPath);
-  }
+    CREATE INDEX IF NOT EXISTS idx_clientes_nombre ON clientes(nombre);
+    CREATE INDEX IF NOT EXISTS idx_veh_cliente ON vehiculos(cliente_id);
+    CREATE INDEX IF NOT EXISTS idx_orden_cliente ON ordenes(cliente_id);
+    CREATE INDEX IF NOT EXISTS idx_orden_estado ON ordenes(status);
+    CREATE INDEX IF NOT EXISTS idx_costos_orden ON costos(orden_id);
+  `);
+  
+  // Simple migration checks for existing SQLite DBs
+  try { db.prepare("ALTER TABLE ordenes ADD COLUMN prioridad TEXT DEFAULT 'normal'").run(); } catch(e) {}
+  try { db.prepare("ALTER TABLE ordenes ADD COLUMN tecnico TEXT").run(); } catch(e) {}
+  
+  console.log("🔥 Base de datos SQLite inicializada:", dbPath);
 
   module.exports = { db, all, get, run };
 }

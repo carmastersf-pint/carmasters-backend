@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { useConfigStore } from "../lib/store/configurador";
 import { useNavigate } from "react-router-dom";
