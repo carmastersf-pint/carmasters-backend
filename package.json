@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "build": "cd client && npm install && npm run build && cp -r dist ../dist"
+    "build": "echo 'No build step required for backend API'"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -24,6 +24,6 @@
     "nodemon": "^3.1.4"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "20.x"
   }
 }
