@@ -244,7 +244,7 @@ export default function AdminPanel() {
         <div className="h-full flex flex-col">
           <div className="p-6 border-b border-zinc-800/50 flex items-center justify-between bg-zinc-900/50 backdrop-blur-sm">
             <div>
-              <h1 className="text-xl font-black italic tracking-tighter text-white">CAR MASTERS</h1>
+              <img src="/logo.png" alt="Apex Car" className="h-12 w-auto object-contain mb-2" />
               <div className="flex items-center gap-2">
                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
                  <p className="text-[10px] text-zinc-500 font-bold tracking-[0.2em] uppercase">System v1.0</p>

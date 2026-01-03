@@ -60,15 +60,14 @@ export default function Login() {
         {/* Decorative top highlight */}
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-50"></div>
 
-        <div className="text-center mb-10">
+        <div className="text-center mb-8">
           <motion.div 
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
-            className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-zinc-800 to-black border border-zinc-700 mb-6 shadow-xl shadow-red-900/20 relative group"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            className="flex justify-center mb-6"
           >
-             <div className="absolute inset-0 bg-red-500/20 blur-xl rounded-full group-hover:bg-red-500/30 transition-all duration-500"></div>
-             <Wrench className="w-10 h-10 text-red-500 relative z-10" />
+             <img src="/logo.png" alt="Apex Car" className="h-40 w-auto object-contain drop-shadow-[0_0_25px_rgba(220,38,38,0.3)]" />
           </motion.div>
           
           <motion.div
@@ -76,9 +75,6 @@ export default function Login() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <h1 className="text-4xl font-black text-white tracking-tighter mb-2 italic">
-              CAR <span className="text-red-600">MASTERS</span>
-            </h1>
             <p className="text-zinc-500 text-xs font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-2">
               <ShieldCheck className="w-3 h-3 text-red-500" />
               {isLogin ? 'Acceso Seguro' : 'Alta Administrativa'}
