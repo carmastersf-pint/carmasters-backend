@@ -233,46 +233,49 @@ export default function AdminPanel() {
     .reduce((acc, curr) => acc + (parseFloat(curr.total) || 0), 0);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex font-sans text-slate-800">
+    <div className="min-h-screen bg-zinc-950 flex font-sans text-zinc-100 selection:bg-red-500/30">
       
       {/* Sidebar */}
       <aside 
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#09090b] text-white transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-zinc-900 border-r border-zinc-800/50 transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } lg:relative lg:translate-x-0`}
       >
         <div className="h-full flex flex-col">
-          <div className="p-6 border-b border-gray-800 flex items-center justify-between">
+          <div className="p-6 border-b border-zinc-800/50 flex items-center justify-between bg-zinc-900/50 backdrop-blur-sm">
             <div>
-              <h1 className="text-xl font-bold tracking-wider text-white">CAR MASTERS</h1>
-              <p className="text-xs text-gray-500 tracking-widest uppercase">POS System</p>
+              <h1 className="text-xl font-black italic tracking-tighter text-white">CAR MASTERS</h1>
+              <div className="flex items-center gap-2">
+                 <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                 <p className="text-[10px] text-zinc-500 font-bold tracking-[0.2em] uppercase">System v1.0</p>
+              </div>
             </div>
-            <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-gray-400">
+            <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-zinc-400 hover:text-white">
               <X className="w-6 h-6" />
             </button>
           </div>
 
-          <nav className="flex-1 px-4 py-6 space-y-2">
+          <nav className="flex-1 px-4 py-6 space-y-1">
             {menuItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group ${
                   activeTab === item.id 
-                    ? "bg-[#00F0FF]/10 text-[#00F0FF]" 
-                    : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                    ? "bg-red-600 text-white shadow-lg shadow-red-900/20" 
+                    : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
                 }`}
               >
-                <item.icon className="w-5 h-5" />
+                <item.icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${activeTab === item.id ? "text-white" : "text-zinc-500 group-hover:text-white"}`} />
                 {item.label}
               </button>
             ))}
           </nav>
 
-          <div className="p-4 border-t border-gray-800">
+          <div className="p-4 border-t border-zinc-800/50 bg-zinc-900/30">
             <button 
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white transition-colors text-sm font-medium"
+              className="w-full flex items-center gap-3 px-4 py-3 text-zinc-400 hover:text-red-400 transition-colors text-sm font-medium hover:bg-red-500/5 rounded-xl"
             >
               <LogOut className="w-5 h-5" />
               Cerrar Sesión
@@ -282,118 +285,131 @@ export default function AdminPanel() {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 z-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
         
         {/* Top Header */}
-        <header className="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6 lg:px-8">
+        <header className="bg-zinc-900/80 backdrop-blur-md border-b border-zinc-800/50 h-16 flex items-center justify-between px-6 lg:px-8 z-10 sticky top-0">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="lg:hidden text-gray-500 hover:text-gray-700"
+              className="lg:hidden text-zinc-400 hover:text-white"
             >
               <Menu className="w-6 h-6" />
             </button>
-            <h2 className="text-xl font-semibold text-gray-800 capitalize">
+            <h2 className="text-xl font-bold text-white tracking-tight capitalize flex items-center gap-2">
               {menuItems.find(i => i.id === activeTab)?.label}
             </h2>
           </div>
 
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
-              AD
+            <div className="h-8 w-[1px] bg-zinc-800 mx-2"></div>
+            <div className="flex items-center gap-3 bg-zinc-800/50 rounded-full pl-1 pr-4 py-1 border border-zinc-700/50">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-red-600 to-red-500 flex items-center justify-center text-white font-bold text-xs shadow-md">
+                AD
+              </div>
+              <span className="text-xs font-bold text-zinc-300 hidden sm:block tracking-wide">ADMINISTRADOR</span>
             </div>
-            <span className="text-sm font-medium text-gray-700 hidden sm:block">Admin</span>
           </div>
         </header>
 
         {/* Dashboard Content */}
-        <main className="flex-1 overflow-auto p-6 lg:p-8">
+        <main className="flex-1 overflow-auto p-6 lg:p-8 z-10 relative scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent">
           
           {activeTab === 'dashboard' && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <div className="bg-zinc-900/50 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-zinc-800/50 group hover:border-zinc-700 transition-all">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wider">Ventas del Mes</h3>
-                  <span className="p-2 bg-green-100 text-green-600 rounded-lg">
-                    <ClipboardList className="w-5 h-5" />
+                  <h3 className="text-zinc-500 text-xs font-bold uppercase tracking-widest">Ventas del Mes</h3>
+                  <span className="p-2 bg-green-500/10 text-green-500 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                    <DollarSign className="w-5 h-5" />
                   </span>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">${ventasMes.toFixed(2)}</p>
-                <p className="text-xs text-gray-400 mt-2">Total completado</p>
+                <p className="text-4xl font-black text-white tracking-tight">${ventasMes.toFixed(2)}</p>
+                <div className="mt-4 flex items-center gap-2 text-xs font-medium text-green-500 bg-green-500/5 w-fit px-2 py-1 rounded">
+                   <span>+12.5%</span>
+                   <span className="text-zinc-500">vs mes anterior</span>
+                </div>
               </div>
 
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <div className="bg-zinc-900/50 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-zinc-800/50 group hover:border-zinc-700 transition-all">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wider">Clientes Activos</h3>
-                  <span className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+                  <h3 className="text-zinc-500 text-xs font-bold uppercase tracking-widest">Clientes Activos</h3>
+                  <span className="p-2 bg-blue-500/10 text-blue-500 rounded-lg group-hover:scale-110 transition-transform duration-300">
                     <Users className="w-5 h-5" />
                   </span>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">{clientes.length}</p>
-                <p className="text-xs text-gray-400 mt-2">Total registrados</p>
+                <p className="text-4xl font-black text-white tracking-tight">{clientes.length}</p>
+                <p className="text-xs text-zinc-500 mt-2 font-medium">Base de datos de clientes</p>
               </div>
 
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+              <div className="bg-zinc-900/50 backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-zinc-800/50 group hover:border-zinc-700 transition-all">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-gray-500 text-sm font-medium uppercase tracking-wider">Órdenes Abiertas</h3>
-                  <span className="p-2 bg-orange-100 text-orange-600 rounded-lg">
+                  <h3 className="text-zinc-500 text-xs font-bold uppercase tracking-widest">Órdenes Abiertas</h3>
+                  <span className="p-2 bg-orange-500/10 text-orange-500 rounded-lg group-hover:scale-110 transition-transform duration-300">
                     <Settings className="w-5 h-5" />
                   </span>
                 </div>
-                <p className="text-3xl font-bold text-gray-900">{ordenes.filter(o => o.status !== 'entregado').length}</p>
-                <p className="text-xs text-gray-400 mt-2">En proceso</p>
+                <p className="text-4xl font-black text-white tracking-tight">{ordenes.filter(o => o.status !== 'entregado').length}</p>
+                <p className="text-xs text-zinc-500 mt-2 font-medium">Vehículos en taller</p>
               </div>
             </div>
           )}
 
           {activeTab === 'clientes' && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div className="relative w-full sm:w-64">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="bg-zinc-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-zinc-800/50 overflow-hidden flex flex-col h-full max-h-[calc(100vh-140px)]">
+              <div className="p-6 border-b border-zinc-800/50 flex flex-col sm:flex-row justify-between items-center gap-4 bg-zinc-900/80">
+                <div className="relative w-full sm:w-72 group">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 group-focus-within:text-red-500 transition-colors" />
                   <input 
                     type="text" 
                     placeholder="Buscar cliente..." 
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full pl-10 pr-4 py-2.5 bg-black/20 border border-zinc-800 rounded-xl text-sm text-white focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all placeholder-zinc-600"
                   />
                 </div>
                 <button 
                   onClick={() => setIsModalOpen(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-500 transition-all text-sm font-bold shadow-lg shadow-red-900/20 hover:shadow-red-900/40 active:scale-95"
                 >
-                  <Plus className="w-4 h-4" /> Nuevo Cliente
+                  <Plus className="w-4 h-4" /> REGISTRAR CLIENTE
                 </button>
               </div>
               
-              <div className="overflow-x-auto">
+              <div className="overflow-auto flex-1">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-gray-50 text-gray-500 font-medium">
+                  <thead className="bg-zinc-900/90 text-zinc-500 font-bold text-xs uppercase tracking-wider sticky top-0 z-10 backdrop-blur-sm">
                     <tr>
-                      <th className="px-6 py-4">Nombre</th>
-                      <th className="px-6 py-4">Teléfono</th>
-                      <th className="px-6 py-4">Correo</th>
-                      <th className="px-6 py-4">Estado</th>
-                      <th className="px-6 py-4 text-right">Acciones</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Nombre</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Teléfono</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Correo</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Estado</th>
+                      <th className="px-6 py-4 border-b border-zinc-800 text-right">Acciones</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-zinc-800/50">
                     {loading ? (
-                      <tr><td colSpan="5" className="px-6 py-8 text-center text-gray-400">Cargando...</td></tr>
+                      <tr><td colSpan="5" className="px-6 py-8 text-center text-zinc-500 animate-pulse">Cargando base de datos...</td></tr>
                     ) : clientes.length === 0 ? (
-                      <tr><td colSpan="5" className="px-6 py-8 text-center text-gray-400">No hay clientes registrados</td></tr>
+                      <tr><td colSpan="5" className="px-6 py-12 text-center text-zinc-500">
+                        <div className="flex flex-col items-center gap-2">
+                          <Users className="w-8 h-8 opacity-20" />
+                          <p>No hay clientes registrados</p>
+                        </div>
+                      </td></tr>
                     ) : (
                       clientes.map((cliente) => (
-                        <tr key={cliente.id} className="hover:bg-gray-50 transition-colors">
-                          <td className="px-6 py-4 font-medium text-gray-900">{cliente.nombre}</td>
-                          <td className="px-6 py-4 text-gray-600">{cliente.telefono}</td>
-                          <td className="px-6 py-4 text-gray-600">{cliente.correo || '-'}</td>
+                        <tr key={cliente.id} className="hover:bg-zinc-800/30 transition-colors group">
+                          <td className="px-6 py-4 font-medium text-zinc-200 group-hover:text-white">{cliente.nombre}</td>
+                          <td className="px-6 py-4 text-zinc-400">{cliente.telefono}</td>
+                          <td className="px-6 py-4 text-zinc-500 font-mono text-xs">{cliente.correo || '-'}</td>
                           <td className="px-6 py-4">
-                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                              Activo
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold bg-green-500/10 text-green-500 border border-green-500/20">
+                              ACTIVO
                             </span>
                           </td>
                           <td className="px-6 py-4 text-right">
-                            <button className="text-indigo-600 hover:text-indigo-900 font-medium">Editar</button>
+                            <button className="text-zinc-500 hover:text-red-400 font-medium transition-colors text-xs uppercase tracking-wide">Editar</button>
                           </td>
                         </tr>
                       ))
@@ -405,61 +421,66 @@ export default function AdminPanel() {
           )}
 
           {activeTab === 'ordenes' && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-center gap-4">
-                 <div className="relative w-full sm:w-64">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="bg-zinc-900/50 backdrop-blur-sm rounded-2xl shadow-xl border border-zinc-800/50 overflow-hidden flex flex-col h-full max-h-[calc(100vh-140px)]">
+              <div className="p-6 border-b border-zinc-800/50 flex flex-col sm:flex-row justify-between items-center gap-4 bg-zinc-900/80">
+                 <div className="relative w-full sm:w-72 group">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 group-focus-within:text-red-500 transition-colors" />
                   <input 
                     type="text" 
-                    placeholder="Buscar orden..." 
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="Buscar orden por folio, cliente..." 
+                    className="w-full pl-10 pr-4 py-2.5 bg-black/20 border border-zinc-800 rounded-xl text-sm text-white focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all placeholder-zinc-600"
                   />
                 </div>
                 <button 
                   onClick={() => setIsOrdenModalOpen(true)}
-                  className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-5 py-2.5 bg-red-600 text-white rounded-xl hover:bg-red-500 transition-all text-sm font-bold shadow-lg shadow-red-900/20 hover:shadow-red-900/40 active:scale-95"
                 >
-                  <Plus className="w-4 h-4" /> Nueva Orden
+                  <Plus className="w-4 h-4" /> NUEVA ORDEN
                 </button>
               </div>
 
-              <div className="overflow-x-auto">
+              <div className="overflow-auto flex-1">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-gray-50 text-gray-500 font-medium">
+                  <thead className="bg-zinc-900/90 text-zinc-500 font-bold text-xs uppercase tracking-wider sticky top-0 z-10 backdrop-blur-sm">
                     <tr>
-                      <th className="px-6 py-4">Folio</th>
-                      <th className="px-6 py-4">Cliente</th>
-                      <th className="px-6 py-4">Vehículo</th>
-                      <th className="px-6 py-4">Descripción</th>
-                      <th className="px-6 py-4">Estado</th>
-                      <th className="px-6 py-4">Total</th>
-                      <th className="px-6 py-4 text-right">Acciones</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Folio</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Cliente</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Vehículo</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Descripción</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Estado</th>
+                      <th className="px-6 py-4 border-b border-zinc-800">Total</th>
+                      <th className="px-6 py-4 border-b border-zinc-800 text-right">Acciones</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-zinc-800/50">
                     {loading ? (
-                      <tr><td colSpan="7" className="px-6 py-8 text-center text-gray-400">Cargando...</td></tr>
+                      <tr><td colSpan="7" className="px-6 py-8 text-center text-zinc-500 animate-pulse">Cargando órdenes...</td></tr>
                     ) : ordenes.length === 0 ? (
-                      <tr><td colSpan="7" className="px-6 py-8 text-center text-gray-400">No hay órdenes registradas</td></tr>
+                      <tr><td colSpan="7" className="px-6 py-12 text-center text-zinc-500">
+                         <div className="flex flex-col items-center gap-2">
+                          <ClipboardList className="w-8 h-8 opacity-20" />
+                          <p>No hay órdenes registradas</p>
+                        </div>
+                      </td></tr>
                     ) : (
                       ordenes.map((orden) => (
-                        <tr key={orden.id} className="hover:bg-gray-50 transition-colors">
-                          <td className="px-6 py-4 font-mono text-gray-500">#{orden.id.toString().padStart(4, '0')}</td>
-                          <td className="px-6 py-4 font-medium text-gray-900">{orden.cliente}</td>
-                          <td className="px-6 py-4 text-gray-600">{orden.vehiculo}</td>
-                          <td className="px-6 py-4 text-gray-600 truncate max-w-xs">{orden.descripcion}</td>
+                        <tr key={orden.id} className="hover:bg-zinc-800/30 transition-colors group">
+                          <td className="px-6 py-4 font-mono text-zinc-500 group-hover:text-zinc-300">#{orden.id.toString().padStart(4, '0')}</td>
+                          <td className="px-6 py-4 font-medium text-zinc-200 group-hover:text-white">{orden.cliente}</td>
+                          <td className="px-6 py-4 text-zinc-400 text-xs uppercase tracking-wide">{orden.vehiculo}</td>
+                          <td className="px-6 py-4 text-zinc-500 truncate max-w-xs">{orden.descripcion}</td>
                           <td className="px-6 py-4">
-                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              orden.status === 'completado' ? 'bg-green-100 text-green-800' :
-                              orden.status === 'pendiente' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-gray-100 text-gray-800'
+                            <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-bold border ${
+                              orden.status === 'completado' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
+                              orden.status === 'pendiente' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
+                              'bg-zinc-800 text-zinc-400 border-zinc-700'
                             }`}>
-                              {orden.status}
+                              {orden.status.toUpperCase()}
                             </span>
                           </td>
-                          <td className="px-6 py-4 font-medium text-gray-900">${orden.total}</td>
+                          <td className="px-6 py-4 font-mono text-zinc-200">${orden.total}</td>
                           <td className="px-6 py-4 text-right">
-                            <button onClick={() => handleViewOrden(orden)} className="text-indigo-600 hover:text-indigo-900 font-medium">Ver</button>
+                            <button onClick={() => handleViewOrden(orden)} className="text-red-500 hover:text-red-400 font-bold text-xs uppercase tracking-wide hover:underline decoration-2 underline-offset-4">Ver Detalle</button>
                           </td>
                         </tr>
                       ))
@@ -471,12 +492,12 @@ export default function AdminPanel() {
           )}
 
           {activeTab === 'config' && (
-            <div className="flex flex-col items-center justify-center h-96 text-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-gray-400">
-                <Settings className="w-8 h-8" />
+            <div className="flex flex-col items-center justify-center h-96 text-center bg-zinc-900/50 rounded-2xl border border-zinc-800/50">
+              <div className="w-20 h-20 bg-zinc-800/50 rounded-full flex items-center justify-center mb-6 text-zinc-600 animate-spin-slow">
+                <Settings className="w-10 h-10" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900">En desarrollo</h3>
-              <p className="text-gray-500 max-w-sm mt-2">Esta sección del sistema POS estará disponible en la próxima actualización.</p>
+              <h3 className="text-xl font-bold text-white mb-2">Módulo en Desarrollo</h3>
+              <p className="text-zinc-500 max-w-md">Estamos trabajando en las configuraciones avanzadas del sistema. Pronto podrás personalizar impuestos, usuarios y más.</p>
             </div>
           )}
         </main>
@@ -484,43 +505,43 @@ export default function AdminPanel() {
 
       {/* Modal Nuevo Cliente */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-              <h3 className="font-semibold text-gray-800">Registrar Nuevo Cliente</h3>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden ring-1 ring-white/10">
+            <div className="px-6 py-4 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/50">
+              <h3 className="font-bold text-white tracking-wide">REGISTRAR NUEVO CLIENTE</h3>
+              <button onClick={() => setIsModalOpen(false)} className="text-zinc-500 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <form onSubmit={handleSaveClient} className="p-6 space-y-4">
+            <form onSubmit={handleSaveClient} className="p-6 space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Nombre Completo *</label>
+                <label className="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Nombre Completo *</label>
                 <input 
                   type="text" 
                   required
                   value={newClient.nombre}
                   onChange={e => setNewClient({...newClient, nombre: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 bg-black/40 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all placeholder-zinc-700"
                   placeholder="Ej. Juan Pérez"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                <label className="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Teléfono</label>
                 <input 
                   type="tel" 
                   value={newClient.telefono}
                   onChange={e => setNewClient({...newClient, telefono: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 bg-black/40 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all placeholder-zinc-700"
                   placeholder="Ej. 55 1234 5678"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                <label className="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Correo Electrónico</label>
                 <input 
                   type="email" 
                   value={newClient.correo}
                   onChange={e => setNewClient({...newClient, correo: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 bg-black/40 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all placeholder-zinc-700"
                   placeholder="cliente@ejemplo.com"
                 />
               </div>
@@ -528,16 +549,16 @@ export default function AdminPanel() {
                 <button 
                   type="button" 
                   onClick={() => setIsModalOpen(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium"
+                  className="flex-1 px-4 py-3 border border-zinc-700 text-zinc-300 rounded-xl hover:bg-zinc-800 font-bold text-sm transition-colors"
                 >
-                  Cancelar
+                  CANCELAR
                 </button>
                 <button 
                   type="submit" 
                   disabled={saving}
-                  className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium disabled:opacity-50"
+                  className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-500 font-bold text-sm transition-colors disabled:opacity-50 shadow-lg shadow-red-900/20"
                 >
-                  {saving ? 'Guardando...' : 'Guardar Cliente'}
+                  {saving ? 'GUARDANDO...' : 'GUARDAR CLIENTE'}
                 </button>
               </div>
             </form>
@@ -547,90 +568,89 @@ export default function AdminPanel() {
 
       {/* Modal Nueva Orden */}
       {isOrdenModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden max-h-[90vh] overflow-y-auto">
-            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 sticky top-0 bg-white z-10">
-              <h3 className="font-semibold text-gray-800">Nueva Orden de Servicio</h3>
-              <button onClick={() => setIsOrdenModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden max-h-[90vh] overflow-y-auto ring-1 ring-white/10 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900">
+            <div className="px-6 py-4 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/95 sticky top-0 z-10 backdrop-blur-md">
+              <h3 className="font-bold text-white tracking-wide">NUEVA ORDEN DE SERVICIO</h3>
+              <button onClick={() => setIsOrdenModalOpen(false)} className="text-zinc-500 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <form onSubmit={handleSaveOrden} className="p-6 space-y-4">
+            <form onSubmit={handleSaveOrden} className="p-6 space-y-5">
               {/* Selección de Cliente */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Cliente *</label>
+                <label className="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Cliente *</label>
                 <select 
                   required
                   value={newOrden.cliente_id}
                   onChange={e => setNewOrden({...newOrden, cliente_id: e.target.value, vehiculo_id: ''})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                  className="w-full px-4 py-3 bg-black/40 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all appearance-none"
                 >
-                  <option value="">Seleccionar Cliente</option>
+                  <option value="" className="bg-zinc-900 text-zinc-500">Seleccionar Cliente</option>
                   {clientes.map(c => (
-                    <option key={c.id} value={c.id}>{c.nombre}</option>
+                    <option key={c.id} value={c.id} className="bg-zinc-900 text-white">{c.nombre}</option>
                   ))}
                 </select>
               </div>
 
               {/* Selección de Vehículo */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Vehículo *</label>
+                <label className="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Vehículo *</label>
                 <div className="flex gap-2">
                   <select 
                     required
                     disabled={!newOrden.cliente_id}
                     value={newOrden.vehiculo_id}
                     onChange={e => setNewOrden({...newOrden, vehiculo_id: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white disabled:bg-gray-100"
+                    className="w-full px-4 py-3 bg-black/40 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all disabled:opacity-50 appearance-none"
                   >
-                    <option value="">Seleccionar Vehículo</option>
+                    <option value="" className="bg-zinc-900 text-zinc-500">Seleccionar Vehículo</option>
                     {vehiculosFiltrados.length > 0 ? (
                       vehiculosFiltrados.map(v => (
-                        <option key={v.id} value={v.id}>{v.marca} {v.modelo} - {v.placas}</option>
+                        <option key={v.id} value={v.id} className="bg-zinc-900 text-white">{v.marca} {v.modelo} - {v.placas}</option>
                       ))
                     ) : (
-                      <option value="" disabled>No hay vehículos registrados para este cliente</option>
+                      <option value="" disabled className="bg-zinc-900 text-zinc-500">No hay vehículos registrados para este cliente</option>
                     )}
                   </select>
-                  {/* Aquí podríamos agregar un botón rápido para agregar vehículo si no existe, pero por simplicidad lo omito por ahora */}
                 </div>
               </div>
 
               {/* Descripción */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Descripción del Problema/Servicio *</label>
+                <label className="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Descripción del Problema/Servicio *</label>
                 <textarea 
                   required
                   rows="3"
                   value={newOrden.descripcion}
                   onChange={e => setNewOrden({...newOrden, descripcion: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 bg-black/40 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all placeholder-zinc-700"
                   placeholder="Detalle el servicio a realizar..."
                 />
               </div>
 
               {/* Costo Estimado */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Costo Estimado ($)</label>
+                <label className="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Costo Estimado ($)</label>
                 <input 
                   type="number" 
                   min="0"
                   step="0.01"
                   value={newOrden.total}
                   onChange={e => setNewOrden({...newOrden, total: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-3 bg-black/40 border border-zinc-800 rounded-xl text-white focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all placeholder-zinc-700"
                   placeholder="0.00"
                 />
               </div>
 
               {/* Imágenes */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Evidencia / Imágenes</label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:bg-gray-50 transition-colors cursor-pointer relative">
+                <label className="block text-xs font-bold text-zinc-500 mb-1.5 uppercase tracking-wider">Evidencia / Imágenes</label>
+                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-zinc-800 border-dashed rounded-xl hover:bg-zinc-800/50 transition-colors cursor-pointer relative group">
                   <div className="space-y-1 text-center">
-                    <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
-                    <div className="flex text-sm text-gray-600">
-                      <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                    <ImageIcon className="mx-auto h-12 w-12 text-zinc-600 group-hover:text-red-500 transition-colors" />
+                    <div className="flex text-sm text-zinc-400">
+                      <label htmlFor="file-upload" className="relative cursor-pointer rounded-md font-bold text-red-500 hover:text-red-400 focus-within:outline-none">
                         <span>Subir archivos</span>
                         <input id="file-upload" name="file-upload" type="file" className="sr-only" multiple accept="image/*" 
                           onChange={e => setNewOrden({...newOrden, imagenes: e.target.files})}
@@ -638,9 +658,9 @@ export default function AdminPanel() {
                       </label>
                       <p className="pl-1">o arrastrar y soltar</p>
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
+                    <p className="text-xs text-zinc-600">PNG, JPG, GIF hasta 10MB</p>
                     {newOrden.imagenes && newOrden.imagenes.length > 0 && (
-                      <p className="text-xs text-green-600 font-medium mt-2">{newOrden.imagenes.length} archivos seleccionados</p>
+                      <p className="text-xs text-green-500 font-bold mt-2">{newOrden.imagenes.length} archivos seleccionados</p>
                     )}
                   </div>
                 </div>
@@ -650,16 +670,16 @@ export default function AdminPanel() {
                 <button 
                   type="button" 
                   onClick={() => setIsOrdenModalOpen(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium"
+                  className="flex-1 px-4 py-3 border border-zinc-700 text-zinc-300 rounded-xl hover:bg-zinc-800 font-bold text-sm transition-colors"
                 >
-                  Cancelar
+                  CANCELAR
                 </button>
                 <button 
                   type="submit" 
                   disabled={saving}
-                  className="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium disabled:opacity-50"
+                  className="flex-1 px-4 py-3 bg-red-600 text-white rounded-xl hover:bg-red-500 font-bold text-sm transition-colors disabled:opacity-50 shadow-lg shadow-red-900/20"
                 >
-                  {saving ? 'Creando Orden...' : 'Crear Orden'}
+                  {saving ? 'CREANDO...' : 'CREAR ORDEN'}
                 </button>
               </div>
             </form>
@@ -669,32 +689,32 @@ export default function AdminPanel() {
 
       {/* Modal Detalle Orden */}
       {isDetailModalOpen && selectedOrden && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
-            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 sticky top-0 bg-white z-10">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden max-h-[90vh] overflow-y-auto ring-1 ring-white/10 scrollbar-thin scrollbar-thumb-zinc-700 scrollbar-track-zinc-900">
+            <div className="px-6 py-4 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/95 sticky top-0 z-10 backdrop-blur-md">
               <div>
-                <h3 className="font-semibold text-gray-800">Orden #{selectedOrden.id.toString().padStart(4, '0')}</h3>
-                <p className="text-xs text-gray-500">{selectedOrden.cliente} - {selectedOrden.vehiculo}</p>
+                <h3 className="font-bold text-white tracking-wide">ORDEN #{selectedOrden.id.toString().padStart(4, '0')}</h3>
+                <p className="text-xs text-zinc-500 uppercase tracking-wider mt-0.5">{selectedOrden.cliente} - {selectedOrden.vehiculo}</p>
               </div>
-              <button onClick={() => setIsDetailModalOpen(false)} className="text-gray-400 hover:text-gray-600">
+              <button onClick={() => setIsDetailModalOpen(false)} className="text-zinc-500 hover:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-8">
               {/* Status Bar */}
-              <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium text-gray-700">Estado de la Orden</label>
+              <div className="flex flex-col gap-3">
+                <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Estado de la Orden</label>
                 <div className="flex flex-wrap gap-2">
                   {['pendiente', 'en_proceso', 'completado', 'entregado', 'cancelado'].map(status => (
                     <button
                       key={status}
                       onClick={() => handleUpdateOrdenStatus(status)}
                       disabled={saving}
-                      className={`px-3 py-1 rounded-full text-xs font-medium capitalize border transition-colors ${
+                      className={`px-4 py-2 rounded-lg text-xs font-bold capitalize border transition-all ${
                         selectedOrden.status === status
-                          ? 'bg-indigo-600 text-white border-indigo-600'
-                          : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                          ? 'bg-red-600 text-white border-red-600 shadow-lg shadow-red-900/20'
+                          : 'bg-zinc-900 text-zinc-500 border-zinc-800 hover:bg-zinc-800 hover:text-white'
                       }`}
                     >
                       {status.replace('_', ' ')}
@@ -705,25 +725,25 @@ export default function AdminPanel() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-2">Detalles del Servicio</h4>
-                  <p className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                  <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Detalles del Servicio</h4>
+                  <p className="text-sm text-zinc-300 bg-zinc-800/50 p-4 rounded-xl border border-zinc-700/50 leading-relaxed">
                     {selectedOrden.descripcion}
                   </p>
                 </div>
                 <div>
-                   <h4 className="text-sm font-medium text-gray-900 mb-2">Información Financiera</h4>
-                   <div className="bg-gray-50 p-3 rounded-lg border border-gray-100 space-y-2">
+                   <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Información Financiera</h4>
+                   <div className="bg-zinc-800/50 p-4 rounded-xl border border-zinc-700/50 space-y-3">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Total Estimado:</span>
-                        <span className="font-medium">${selectedOrden.total}</span>
+                        <span className="text-zinc-400">Total Estimado:</span>
+                        <span className="font-bold text-white">${selectedOrden.total}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Anticipo:</span>
-                        <span className="font-medium text-green-600">-${selectedOrden.anticipo || 0}</span>
+                        <span className="text-zinc-400">Anticipo:</span>
+                        <span className="font-bold text-green-500">-${selectedOrden.anticipo || 0}</span>
                       </div>
-                      <div className="pt-2 border-t border-gray-200 flex justify-between text-sm font-bold">
-                         <span>Saldo Pendiente:</span>
-                         <span className="text-indigo-600">${(selectedOrden.total || 0) - (selectedOrden.anticipo || 0)}</span>
+                      <div className="pt-3 border-t border-zinc-700/50 flex justify-between text-sm font-bold">
+                         <span className="text-white">Saldo Pendiente:</span>
+                         <span className="text-red-500">${(selectedOrden.total || 0) - (selectedOrden.anticipo || 0)}</span>
                       </div>
                    </div>
                 </div>
@@ -731,26 +751,30 @@ export default function AdminPanel() {
 
               {/* Imágenes */}
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-2">Evidencia Fotográfica</h4>
+                <h4 className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Evidencia Fotográfica</h4>
                 {selectedOrden.imagenes && selectedOrden.imagenes.length > 0 ? (
                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                      {selectedOrden.imagenes.map((img, idx) => (
-                       <a key={idx} href={`${API_URL}${img}`} target="_blank" rel="noreferrer" className="block aspect-square rounded-lg overflow-hidden border border-gray-200 hover:opacity-90 transition-opacity">
+                       <a key={idx} href={`${API_URL}${img}`} target="_blank" rel="noreferrer" className="block aspect-square rounded-xl overflow-hidden border border-zinc-800 hover:border-red-500/50 transition-all group relative">
+                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors z-10"></div>
                          <img src={`${API_URL}${img}`} alt={`Evidencia ${idx}`} className="w-full h-full object-cover" />
                        </a>
                      ))}
                    </div>
                 ) : (
-                  <p className="text-sm text-gray-400 italic">No hay imágenes adjuntas</p>
+                  <div className="p-8 border border-dashed border-zinc-800 rounded-xl text-center">
+                    <ImageIcon className="w-8 h-8 text-zinc-700 mx-auto mb-2" />
+                    <p className="text-sm text-zinc-500 italic">No hay imágenes adjuntas</p>
+                  </div>
                 )}
               </div>
               
-              <div className="flex justify-end pt-4 border-t border-gray-100">
+              <div className="flex justify-end pt-4 border-t border-zinc-800">
                 <button 
                   onClick={() => setIsDetailModalOpen(false)}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-medium text-sm"
+                  className="px-6 py-2.5 bg-zinc-800 text-white rounded-xl hover:bg-zinc-700 font-bold text-sm transition-colors"
                 >
-                  Cerrar
+                  CERRAR
                 </button>
               </div>
 
@@ -761,4 +785,5 @@ export default function AdminPanel() {
 
     </div>
   );
+
 }

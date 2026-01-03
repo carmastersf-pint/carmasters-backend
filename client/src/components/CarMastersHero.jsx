@@ -20,20 +20,20 @@ export default function CarMastersHero() {
       <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 transition-all duration-300 bg-zinc-950/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white text-black flex items-center justify-center rounded-sm">
+            <div className="w-10 h-10 bg-gradient-to-br from-zinc-800 to-black border border-zinc-700 text-red-500 flex items-center justify-center rounded-lg shadow-lg shadow-red-900/20">
               <Sparkles className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-[0.2em] text-white">CAR MASTERS</h1>
-              <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Detailing & Protection</p>
+              <h1 className="text-lg font-black italic tracking-tighter text-white">CAR <span className="text-red-600">MASTERS</span></h1>
+              <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Detailing & Protection</p>
             </div>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex gap-8 text-xs font-medium tracking-widest uppercase text-zinc-400">
-            <a href="#servicios" className="hover:text-white transition-colors">Servicios</a>
-            <a href="#casos" className="hover:text-white transition-colors">Proyectos</a>
-            <a href="#estudio" className="hover:text-white transition-colors">El Estudio</a>
+          <div className="hidden md:flex gap-8 text-xs font-bold tracking-widest uppercase text-zinc-400">
+            <a href="#servicios" className="hover:text-red-500 transition-colors">Servicios</a>
+            <a href="#casos" className="hover:text-red-500 transition-colors">Proyectos</a>
+            <a href="#estudio" className="hover:text-red-500 transition-colors">El Estudio</a>
           </div>
 
           <div className="hidden md:flex items-center gap-6">
@@ -45,7 +45,7 @@ export default function CarMastersHero() {
             </a>
             <button 
               onClick={() => navigate('/admin')}
-              className="text-xs font-bold tracking-widest text-zinc-600 hover:text-white transition-colors"
+              className="text-xs font-bold tracking-widest text-white bg-red-600 hover:bg-red-500 px-4 py-2 rounded-lg transition-colors shadow-lg shadow-red-900/20"
             >
               ACCESO CLIENTES
             </button>
@@ -68,7 +68,7 @@ export default function CarMastersHero() {
             <a href="#servicios" onClick={() => setIsMenuOpen(false)}>Servicios</a>
             <a href="#casos" onClick={() => setIsMenuOpen(false)}>Proyectos</a>
             <a href="#estudio" onClick={() => setIsMenuOpen(false)}>El Estudio</a>
-            <button onClick={() => { navigate('/admin'); setIsMenuOpen(false); }} className="text-left text-zinc-500">Acceso Clientes</button>
+            <button onClick={() => { navigate('/admin'); setIsMenuOpen(false); }} className="text-left text-red-500 font-bold">Acceso Clientes</button>
           </div>
         </div>
       )}
@@ -81,17 +81,17 @@ export default function CarMastersHero() {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 border border-zinc-800 rounded-full mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-[10px] uppercase tracking-widest text-zinc-400">Aceptando Proyectos 2024</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 border border-red-500/20 bg-red-500/5 rounded-full mb-8 backdrop-blur-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+            <span className="text-[10px] uppercase tracking-widest text-red-200 font-bold">Aceptando Proyectos 2026</span>
           </div>
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light mb-8 leading-[0.9] tracking-tighter text-white">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black italic mb-8 leading-[0.9] tracking-tighter text-white">
             ELEVANDO EL<br />
-            <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-500">ESTÁNDAR</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-800">ESTÁNDAR</span>
           </h1>
 
-          <p className="text-sm md:text-base text-zinc-400 max-w-xl mx-auto mb-12 leading-relaxed font-light tracking-wide">
+          <p className="text-sm md:text-base text-zinc-400 max-w-xl mx-auto mb-12 leading-relaxed font-medium tracking-wide">
             Especialistas en protección y estética automotriz de alto nivel. 
             PPF, Recubrimientos Cerámicos y Restauración para quienes exigen perfección.
           </p>
@@ -99,14 +99,14 @@ export default function CarMastersHero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
             <button 
               onClick={() => navigate('/configurador')}
-              className="group relative px-8 py-4 bg-white text-black min-w-[200px] overflow-hidden transition-all duration-300 hover:bg-zinc-200"
+              className="group relative px-8 py-4 bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white min-w-[200px] overflow-hidden transition-all duration-300 rounded-xl shadow-lg shadow-red-900/30"
             >
               <span className="relative z-10 flex items-center justify-center gap-2 text-xs font-bold tracking-[0.2em] uppercase">
                 Cotizar Proyecto <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
             </button>
             
-            <button className="px-8 py-4 border border-zinc-800 text-zinc-400 min-w-[200px] hover:border-white hover:text-white transition-all duration-300">
+            <button className="px-8 py-4 border border-zinc-800 text-zinc-400 min-w-[200px] hover:border-red-500 hover:text-white transition-all duration-300 rounded-xl">
               <span className="text-xs font-bold tracking-[0.2em] uppercase">
                 Ver Portafolio
               </span>
@@ -120,9 +120,9 @@ export default function CarMastersHero() {
               { label: 'Proyectos', value: '500+' },
               { label: 'Garantía', value: '100%' }
             ].map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="text-2xl md:text-4xl font-light text-white mb-1">{stat.value}</div>
-                <div className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-widest">{stat.label}</div>
+              <div key={i} className="text-center group cursor-default">
+                <div className="text-2xl md:text-4xl font-black italic text-white mb-1 group-hover:text-red-500 transition-colors">{stat.value}</div>
+                <div className="text-[10px] md:text-xs text-zinc-500 uppercase tracking-widest font-bold">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -130,7 +130,7 @@ export default function CarMastersHero() {
       </div>
 
       {/* Footer Strip */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-zinc-900 via-white to-zinc-900 opacity-20"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-zinc-900 via-red-600 to-zinc-900 opacity-50"></div>
     </div>
   );
 }

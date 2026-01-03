@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Lock, User, ArrowRight, AlertCircle } from 'lucide-react';
+import { Lock, User, ArrowRight, AlertCircle, Wrench, ShieldCheck } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
@@ -42,89 +43,149 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-2xl">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-white tracking-wider mb-2">CAR MASTERS</h1>
-          <p className="text-zinc-400 text-sm uppercase tracking-widest">
-            {isLogin ? 'Acceso Administrativo' : 'Registro de Admin'}
-          </p>
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-zinc-950 font-sans selection:bg-red-500/30">
+      {/* Background Decoration */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-red-900/20 via-zinc-950 to-zinc-950"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-zinc-950/60 backdrop-blur-[2px]"></div>
+      </div>
+
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "outCirc" }}
+        className="max-w-md w-full bg-zinc-900/80 backdrop-blur-2xl border border-white/5 rounded-3xl p-8 shadow-2xl shadow-black/50 z-10 relative overflow-hidden"
+      >
+        {/* Decorative top highlight */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-50"></div>
+
+        <div className="text-center mb-10">
+          <motion.div 
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
+            className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-zinc-800 to-black border border-zinc-700 mb-6 shadow-xl shadow-red-900/20 relative group"
+          >
+             <div className="absolute inset-0 bg-red-500/20 blur-xl rounded-full group-hover:bg-red-500/30 transition-all duration-500"></div>
+             <Wrench className="w-10 h-10 text-red-500 relative z-10" />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
+            <h1 className="text-4xl font-black text-white tracking-tighter mb-2 italic">
+              CAR <span className="text-red-600">MASTERS</span>
+            </h1>
+            <p className="text-zinc-500 text-xs font-bold uppercase tracking-[0.3em] flex items-center justify-center gap-2">
+              <ShieldCheck className="w-3 h-3 text-red-500" />
+              {isLogin ? 'Acceso Seguro' : 'Alta Administrativa'}
+            </p>
+          </motion.div>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-3 text-red-400 text-sm">
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-center gap-3 text-red-400 text-sm"
+          >
             <AlertCircle className="w-5 h-5 flex-shrink-0" />
             {error}
-          </div>
+          </motion.div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {!isLogin && (
-            <div>
-              <label className="block text-xs font-medium text-zinc-400 mb-1 ml-1">NOMBRE COMPLETO</label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+            >
+              <label className="block text-[10px] font-bold text-zinc-500 mb-1.5 ml-1 tracking-wider uppercase">Nombre Completo</label>
+              <div className="relative group">
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-600 group-focus-within:text-red-500 transition-colors" />
                 <input
                   type="text"
                   required
                   value={formData.nombre}
                   onChange={e => setFormData({...formData, nombre: e.target.value})}
-                  className="w-full bg-black/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-white placeholder-zinc-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                  className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl py-4 pl-12 pr-4 text-zinc-100 placeholder-zinc-700 focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all text-sm font-medium"
                   placeholder="Ej. Admin Principal"
                 />
               </div>
-            </div>
+            </motion.div>
           )}
 
-          <div>
-            <label className="block text-xs font-medium text-zinc-400 mb-1 ml-1">USUARIO</label>
-            <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <label className="block text-[10px] font-bold text-zinc-500 mb-1.5 ml-1 tracking-wider uppercase">Usuario</label>
+            <div className="relative group">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-600 group-focus-within:text-red-500 transition-colors" />
               <input
                 type="text"
                 required
                 value={formData.username}
                 onChange={e => setFormData({...formData, username: e.target.value})}
-                className="w-full bg-black/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-white placeholder-zinc-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl py-4 pl-12 pr-4 text-zinc-100 placeholder-zinc-700 focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all text-sm font-medium"
                 placeholder="admin"
               />
             </div>
-          </div>
+          </motion.div>
 
-          <div>
-            <label className="block text-xs font-medium text-zinc-400 mb-1 ml-1">CONTRASEÑA</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <label className="block text-[10px] font-bold text-zinc-500 mb-1.5 ml-1 tracking-wider uppercase">Contraseña</label>
+            <div className="relative group">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-600 group-focus-within:text-red-500 transition-colors" />
               <input
                 type="password"
                 required
                 value={formData.password}
                 onChange={e => setFormData({...formData, password: e.target.value})}
-                className="w-full bg-black/50 border border-zinc-800 rounded-lg py-3 pl-10 pr-4 text-white placeholder-zinc-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
+                className="w-full bg-zinc-950/50 border border-zinc-800 rounded-xl py-4 pl-12 pr-4 text-zinc-100 placeholder-zinc-700 focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all text-sm font-medium"
                 placeholder="••••••••"
               />
             </div>
-          </div>
+          </motion.div>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-lg flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+            className="w-full bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-8 shadow-lg shadow-red-900/30 text-sm tracking-wide"
           >
-            {loading ? 'Procesando...' : (isLogin ? 'Iniciar Sesión' : 'Crear Cuenta')}
-            {!loading && <ArrowRight className="w-5 h-5" />}
-          </button>
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"/>
+                VERIFICANDO...
+              </span>
+            ) : (
+              <>
+                {isLogin ? 'ACCEDER AL SISTEMA' : 'CREAR CUENTA'}
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
+          </motion.button>
         </form>
 
-        <div className="mt-6 text-center">
+        <div className="mt-8 text-center">
           <button
             onClick={() => { setIsLogin(!isLogin); setError(''); }}
-            className="text-zinc-500 hover:text-white text-sm transition-colors"
+            className="text-zinc-500 hover:text-white text-xs font-semibold transition-colors uppercase tracking-wide"
           >
-            {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia Sesión'}
+            {isLogin ? '¿No tienes cuenta? Solicita acceso' : '¿Ya tienes cuenta? Inicia Sesión'}
           </button>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }
